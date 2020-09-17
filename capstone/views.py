@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def index(request):
+    return render(request, "capstone/index.html")
+
+def todolist(request):
+    return render(request, "capstone/todolist.html")

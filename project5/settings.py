@@ -25,12 +25,13 @@ SECRET_KEY = 'r2i3-yyz%z+-y7*cc4lcw%as7-9cxt59r@g%zodm8jts$b6_@v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.234']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'capstone',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
