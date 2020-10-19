@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %} Capstone {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
+    <link href="{% static 'capstone/styles.css' %}" rel="stylesheet">
+
+{% block head %}
+{% endblock %}
+</head>
+<body>
+<div class="ui tabular menu">
+    <a class="item">
+        Homepage
+    </a>
+    <a class="item" href="/capstone/search">
+        Search
+    </a>
+    <a class="item" href="/capstone/who_is_that_pokemon">
+        Who is that Pokemon?
+    </a>
+</div>
+{% block body %}
+{% endblock %}
+</body>
+</html>
