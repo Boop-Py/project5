@@ -1,38 +1,39 @@
 {% extends "capstone/layout.html" %}
 {% load static %}
 {% block body %}
-<div class="ui container">
-
+<div class="nes-container is-centered is-rounded">
     <h2 class="ui center aligned header">
         Search
     </h2>
-
-    <form class="ui form" action="search" method="post">
-        {% csrf_token %}
-        <input class="field" name="search_input" type="text" align="center" placeholder="All or part of a Pokemon name.. eg 'pika'"></input>
-        <button class="ui center aligned blue button" type="submit" align="center">Search a Pokemon!</button>    
-    </form>
-
-
-
-    <a class="ui teal labeled icon button" href="{% url 'randomise' %}">
+    <section>
+        <form class="ui form" action={% url 'search' %} method="post">
+            {% csrf_token %}
+            <input class="nes-textarea" name="search_input" type="text" align="center" placeholder="All or part of a Pokemon name.. eg 'pika'"></input>
+            <button class="nes-btn is-success" type="submit" align="center">Search a Pokemon!</button>    
+        </form>
+    </section>
+    <a class="nes-btn is-primary" href="{% url 'randomise' %}">
         Random Pokemon!
-        <i class="random icon"></i>
-    </a>
-
-    <div class="ui horizontal divider"> Or </div>
-    
-    <h2 class="ui center aligned header">
-        Browse!
-    </h2>
-    <div class="ui relaxed divided list">
+    </a> 
+</div> 
+<div class="nes-container is-dark is-rounded">
+    <div class="nes-container is-dark is-centered">
+        <h2 class="nes-btn is-dark">
+            Browse!  
+        </h2>
+        
+    </div>    
+    <div class="lists">
+        <ul class="nes-list is-disc">
         {% for each in pokemon_list %}
-
-            <a class="header item" href="#">    
-                {{ each }}
+        <li>
+            <a class="nes-badge" href="{% url 'pokemon' each.pokemon_id %}">  
+                <span class="is-primary">{{ each.name }}</span>                
             </a>
-
+        </li>
         {% endfor %}
+        </ul>
     </div>
+</div>
 </div>
 {% endblock %}

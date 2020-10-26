@@ -7,5 +7,6 @@ urlpatterns = [
     path("who_is_that_pokemon", views.who_is_that_pokemon, name="who_is_that_pokemon"),
     path("todolist", views.todolist, name="todolist"),
     path("search", views.search, name="search"),
-    path("randomise", views.randomise, name="randomise")
+    path("pokemon/<str:pokemon_id>", views.pokemon, name="pokemon"),
+    path("randomise", views.randomise, name="randomise")  
 ]

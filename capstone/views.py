@@ -2,119 +2,100 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 import requests
 import random
-import csv
+from .models import Pokemon
+import re
+
 
 ## TODO
-# add pokemon the database
-# random pokemon page
+# https://nostalgic-css.github.io/NES.css/#
+# make pokemon game
+# fix the weird descriptions
+# input tails, legs, horns, tail
 
 
-def index(request):
-    # query the poke API with kanto pokedex as parameter
-    #f = open("pokemon.csv", "a")
-    #f.write("ID_No, Name, Shiny, Default, \n")
+def index(request):  
+    pokemon_list = Pokemon.objects.all()
+    return render(request, "capstone/index.html", {
+        "pokemon_list": pokemon_list
+    })
+
+def who_is_that_pokemon(request):  
+    # tell user to think of a pokemon
+
+    # all choice features are set to an unassigned value
+    user_choice_name = "Unassigned"
+    user_choice_shape = "Unassigned"
+    user_choice_color = "Unassigned"
+    user_choice_egg_group = "Unassigned"
+    user_choice_habitat = "Unassigned"
+    user_choice_evolves = "Unassigned"
+    user_choice_type = "Unassigned"
+    user_choice_ears = "Unassigned"
+    user_choice_legs = "Unassigned"
+    user_choice_horns = "Unassigned"
+    user_choice_tail = "Unassigned"
+    # while guessed_pokemon is not equal to user_choice pokemon
+    #while True:?
+    #count number of guesses and show them at the end 
+    #number_of_guesses = 0
+    #number_of_guesses = number_of_guesses + 1
+    #ask questions to change the user_choice values
+    #
+    # filter queries based on user_choice values
+
     
     
-    x = 1
-    api_query = requests.get("https://pokeapi.co/api/v2/pokemon/" + str(x))
-    if api_query.status_code != 200:
-        raise Exception("Unable to reach Poke API")
-    else: 
-        pokemon_info = api_query.json()
-        # for pokemon name
-        name = pokemon_info["name"]
-        print(f"Name: {name}")
-        # api link for description, colour
-        species_api = pokemon_info["species"]["url"]
-        print(species_api)
-        # for default sprite
-        default_sprite = pokemon_info["sprites"]["front_default"]
-        print(f"Default: {default_sprite}")
-        # for shiny sprite
-        shiny_sprite = pokemon_info["sprites"]["front_shiny"]
-        print(f"Shiny: {shiny_sprite}")
-        # for types
-        main_type = pokemon_info["types"][0]["type"]["name"]
-        secondary_type = pokemon_info["types"][1]["type"]["name"]
-        print(f"Type(s): {main_type}, {secondary_type}")
-
-        # use species api link for other things
-        api_query_2 = requests.get(f"{species_api}")
-        if api_query_2.status_code != 200:
-            raise Exception("Unable to reach Poke API")
-        else: 
-            species_info = api_query_2.json()
-            color = species_info["color"]["name"]
-            print(f"Color: {color}")
-            main_egg_group = species_info["egg_groups"][0]["name"]
-            secondary_egg_group = species_info["egg_groups"][1]["name"]
-            print(f"Egg Group(s): {main_egg_group}, {secondary_egg_group}")
-            evolves_from_pokemon = species_info["evolves_from_species"]
-            print(f"Evolves from: {evolves_from_pokemon}")
-            description = species_info["flavor_text_entries"][0]["flavor_text"]
-            print(f"Description: {description}")
-            habitat = species_info["habitat"]["name"]
-            print(f"Found in: {habitat}")
-            number = species_info["id"]
-            print(f"ID: {number}")
-            shape = species_info["shape"]["name"]
-            print(f"Shape: {shape}")
-
-
-
-        #f.write( + ", " + shiny + ", " + default + "\n")  
-
-
-
-        '''
-        pokemon_id
-    
-        name
-        description
-        shape
-        main_color
-        egg_group
-        habitat
-        img
-        shiny_img
-        ears
-        legs
-        horns
-        tail
-        #can evolve
-        #evolved from another pokemon
-        #type
-        '''
-        return render(request, "capstone/index.html", {
-           # "pokemon_list": pokemon_list
-        })
-
-def who_is_that_pokemon(request):    
     return render(request, "capstone/who.html")    
         
 def search(request): 
-    if request.method == "POST":
+    if request.method == "POST": 
+        # all pokemon
+        pokemon_list = Pokemon.objects.all()
         # get value from form   
-        pokemon_input = request.POST["search_input"]           
+        raw_pokemon_input = request.POST["search_input"]    
+        print(raw_pokemon_input)
+        pokemon_input = raw_pokemon_input.lower()
         print(pokemon_input)
-        # format for part compare
-        like_pokemon_input = "%{}%".format(pokemon_input)
+        # check if anything matches the input
+        target_pokemon = Pokemon.objects.filter(name=pokemon_input).first()
+        
+        if target_pokemon is not None:  
+                   
+            target_pokemon_id = target_pokemon.pokemon_id
+            print(target_pokemon_id)          
+            # redirect to that page if it is an exact match
+            return HttpResponseRedirect("pokemon/" + str(target_pokemon_id))
+        
+        elif target_pokemon is None: 
+            # presents a list of all titles with that substring
+            # search where pokemon is like the input
+            like_pokemon_list = Pokemon.objects.filter(name__contains=pokemon_input)
+            print(like_pokemon_list)
 
-        return render(request, "capstone/search.html")
+            return render(request, "capstone/index.html", {
+            "pokemon_list": like_pokemon_list
+            })
+            
+        else: 
+            return render(request, "capstone/search.html")
     else:    
         return render(request, "capstone/search.html")          
 
+def pokemon(request, pokemon_id):
+    target_pokemon = Pokemon.objects.filter(pokemon_id=pokemon_id).first()
+    return render(request, "capstone/pokemon.html", {
+        "pokemon_info": target_pokemon
+    })
+    
 def randomise(request):
     if request.method == "GET":
         #takes a random choice from all of the entries and redirects to it
         #select number from 1-151
-        random_choice = randrange(151)
-        print(random_choice)
-        
-        return HttpResponseRedirect(randomised_choice)
+        random_number = random.randint(1,152)
+        print(random_number)       
+        return HttpResponseRedirect("pokemon/" + str(random_number))
     else:
         return render(request, "capstone/index.html") 
-
 
 def todolist(request):
     return render(request, "capstone/todolist.html")

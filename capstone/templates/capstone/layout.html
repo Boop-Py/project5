@@ -4,24 +4,23 @@
 
 <head>
     <title>{% block title %} Capstone {% endblock %}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <!-- minify -->
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+    <!-- latest -->
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <!-- core style only -->
+    <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
     <link href="{% static 'capstone/styles.css' %}" rel="stylesheet">
 
 {% block head %}
 {% endblock %}
 </head>
 <body>
-<div class="ui tabular menu">
-    <a class="item">
-        Homepage
-    </a>
-    <a class="item" href="/capstone/search">
-        Search
-    </a>
-    <a class="item" href="/capstone/who_is_that_pokemon">
-        Who is that Pokemon?
-    </a>
-</div>
+
+<a class="nes-btn" href="{% url 'index' %}">Homepage</a>
+<a class="nes-btn is-primary" href="{% url 'who_is_that_pokemon' %}">Who is that Pokemon?</a>
+
 {% block body %}
 {% endblock %}
 </body>
