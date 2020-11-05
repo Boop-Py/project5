@@ -16,8 +16,9 @@ class Pokemon(models.Model):
     main_type = models.CharField(max_length=160, default=None)
     secondary_type = models.CharField(max_length=160, default=None)
     ears = models.BooleanField(default=False)
-    legs = models.IntegerField()
+    more_than_two_legs = models.BooleanField(default=False)
     horns = models.BooleanField(default=False)
     tail = models.BooleanField(default=False)
-    
-    
+    fins = models.BooleanField(default=False)
+    beak = models.BooleanField(default=False)
+    wings = models.BooleanField(default=False)

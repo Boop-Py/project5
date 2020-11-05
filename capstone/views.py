@@ -20,31 +20,6 @@ def index(request):
     })
 
 def who_is_that_pokemon(request):  
-    # tell user to think of a pokemon
-
-    # all choice features are set to an unassigned value
-    user_choice_name = "Unassigned"
-    user_choice_shape = "Unassigned"
-    user_choice_color = "Unassigned"
-    user_choice_egg_group = "Unassigned"
-    user_choice_habitat = "Unassigned"
-    user_choice_evolves = "Unassigned"
-    user_choice_type = "Unassigned"
-    user_choice_ears = "Unassigned"
-    user_choice_legs = "Unassigned"
-    user_choice_horns = "Unassigned"
-    user_choice_tail = "Unassigned"
-    # while guessed_pokemon is not equal to user_choice pokemon
-    #while True:?
-    #count number of guesses and show them at the end 
-    #number_of_guesses = 0
-    #number_of_guesses = number_of_guesses + 1
-    #ask questions to change the user_choice values
-    #
-    # filter queries based on user_choice values
-
-    
-    
     return render(request, "capstone/who.html")    
         
 def search(request): 

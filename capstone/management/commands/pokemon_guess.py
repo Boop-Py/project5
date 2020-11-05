@@ -5,147 +5,241 @@ import json
 from ...models import Pokemon
 import random
 
+
+##  make the narrow_down function work.... 
+
+
+
 class Command(BaseCommand):
     help = "Pokemon practice"
-    def handle(self, *args, **kwargs):
-        pokemon_list = Pokemon.objects.all()
-        user_choice_name = "Unassigned"
-        user_choice_shape = "Unassigned"
-        user_choice_color = "Unassigned"
-        user_choice_egg_group = "Unassigned"
-        user_choice_habitat = "Unassigned"
-        user_choice_evolves = "Unassigned"
-        user_choice_type = "Unassigned"
-        user_choice_ears = "Unassigned"
-        user_choice_legs = "Unassigned"
-        user_choice_horns = "Unassigned"
-        user_choice_tail = "Unassigned"
-           
-        colors = ["black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"]             
-        habitats = ["cave", "forest", "grassland", "mountain", "rare", "rough-terrain", "sea", "urban", "waters-edge"]
-                             
-        shapes = ["ball", "squiggle", "fish", "arms", "blob", "upright", "legs", "quadruped", "wings",  "tentacles", "heads", "humanoid", "bug-wings", "armor"]
-        
-        responses = ["Hmm..let me think on that", "Ah-ha, we are getting somewhere", "I think I'm getting closer to the answer!", "Oooh, we are narrowing it down..."]
 
-        types = ["normal", "flying", "ground", "bug", "steel", "water", "ice", "dark", "fighting", "poison", "rock", "ghost", "fire", "grass", "psychic", "dragon", "fairy"]
+    # evolves from is not boolean but we want true or false value, if none = false
+
+    colors = [
+            "black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"
+            ] 
+
+    habitats = [
+                "cave", "forest", "grassland", "mountain", "rare", "rough-terrain", "sea", "urban", "waters-edge"
+                ] 
+
+    shapes = [
+            "ball", "squiggle", "fish", "arms", "blob", "upright", "legs", "quadruped", "wings",  "tentacles", "heads", "humanoid", "bug-wings", "armor"
+            ]
+
+    types = [
+            "normal", "flying", "ground", "bug", "steel", "water", "ice", "dark", "fighting", "poison", "rock", "ghost", "fire", "grass", "psychic", "dragon", "fairy"
+            ]
+
+    remaining_questions = [
+                        "shape", "color", "habitat", "evolves", "type", "ears", "legs", "horns", "tail", "fins", "wings", "beak"
+                        ]  
+     
+    # set all user choice values as default None
+    player_choice = {
+            "name":None,
+            "shape":None,
+            "main_color":None,
+            "habitat":None,
+            "evolves":None,
+            "type":None,
+            "ears":None,
+            "legs":None,
+            "horns":None,
+            "tail":None,
+            "fins":None,
+            "wings":None,
+            "beak":None
+            }
+            
+    # start off with all pokemon as a possibility
+    pokemon_possibilities = []
+    all_pokemon = Pokemon.objects.all()
+    
+    for each_pokemon in all_pokemon:  
+        id_no = each_pokemon.pokemon_id
+        pokemon_possibilities.append(id_no)          
+         
+    def narrow_down(self, question_type):       
+        pokemon_possibilities = self.pokemon_possibilities
+        all_pokemon = self.all_pokemon
+        player_choice = self.player_choice        
+        values = player_choice.values()
+        print("narrowing down")
+              
+        for choice in values:  
+            print(choice)
+            # for those in player choice with given values, eg "habitat"
+            if choice is not None:                              
+                # loop through each pokemon
+                for pokemon in all_pokemon:
+                    print(pokemon)
+                    attribute = f"{str(pokemon)}.{question_type}"
+                    ########## somehow get "main color" as a variable- value
+                    if pokemon.attribute!= choice:
+                        pokemon_possibilities.remove(pokemon.pokemon_id)
+                    else: 
+                        print(f"pokemon {pokemon.pokemon_id} is a possibility")
+
+                    return pokemon_possibilities
+
+
+
+
+    def remove_question(self, question_type):
+        self.remaining_questions.remove(question_type)
         
+    def get_question(self):
+
         questions = {
-                    "color":"Is your chosen Pokemon ''?", 
-                    "habitat":"Is your chosen Pokemon found in/on/around the '' areas?", 
                     "shape":"Is your chosen Pokemon '' shaped?",
+                    "main_color":"Is your chosen Pokemon ''?",
+                    "habitat":"Is your chosen Pokemon found in/on/around the '' areas?",  
+                    "evolves":"Can your chosen Pokemon evolve?",    
                     "type":"Is your chosen Pokemon '' type?",
-                    "ears":"Does your chosen Pokemon have ears?",
+                    "ears":"Does your chosen Pokemon have any visible ears?",
                     "legs":"Does your chosen Pokemon have 2 or more legs?",
                     "horns":"Does your chosen Pokemon have horns?",
-                    "tail":"Does your chosen Pokemon have a tail?"
+                    "tail":"Does your chosen Pokemon have a tail?",
+                    "fins":"Does your chosen Pokemon have fins?",
+                    "wings":"Does your chosen Pokemon have wings?",
+                    "beak":"Does your chosen Pokemon have a beak?"
                     }
-              
-        player_choice = "Pikachu"
-        ai_pokemon_guess = "Voltorb"
-            
 
-        # pick an initial question    
-        key = random.choice(list(questions))
-        question_type = key
-        question = questions[key]
+        remaining_questions = self.remaining_questions
+        if len(remaining_questions) <= 0:
+            print("out of questions")
+        else:
+            # choose a question from the remaining questions
+            remainder = random.choice(remaining_questions)
+            question_type = remainder
+            question = questions[remainder]
 
-        # why am i unable to input?
-        
-        if question_type == "color": 
-            if user_choice_color == "Unassigned":
-                color = random.choice(colors)
-                full_question = question.replace("''", color)
-                print(full_question)
-                answer = input("Enter yes or no: ")
-                if answer == "yes": 
-                    response = random.choice(responses) 
-                    print(response)
-                    user_choice_color = color               
-                elif answer == "no":       
-                    response = random.choice(responses) 
-                    print(response)
-                    colors.remove(color)                                     
-                elif answer == "unsure":       
-                    user_choice_color = "Unknown"
-                key = random.choice(list(questions))
-                question_type = key
-                question = questions[key]
-            
-        elif question_type == "habitat": 
-            if user_choice_habitat == "Unassigned":
-                habitat = random.choice(habitats)
-                full_question = question.replace("''", habitat)
-                print(full_question)
-                answer = input("Enter yes or no: ")
-                if answer == "yes": 
-                    response = random.choice(responses) 
-                    print(response)
-                    user_choice_habitat = habitat                   
-                elif answer == "no": 
-                    response = random.choice(responses) 
-                    print(response)
-                    habitats.remove(habitat)                      
-                elif answer == "unsure":       
-                    user_choice_color = "Unknown"
-                key = random.choice(list(questions))
-                question_type = key
-                question = questions[key]    
-        
-
-        
-        elif question_type == "shape": 
-            if user_choice_shape == "Unassigned":
-                shape = random.choice(shapes)
-                full_question = question.replace("''", shape)
-                print(full_question)
-                answer = input("Enter yes or no: ")
-                if answer == "yes": 
-                    response = random.choice(responses) 
-                    print(response)
-                    user_choice_shape = shape                  
-                elif answer == "no":       
-                    response = random.choice(responses) 
-                    print(response)  
-                    shapes.remove(shape)
-                elif answer == "unsure":       
-                    user_choice_shape = "Unknown"
-            
-        elif question_type == "type": 
-            if user_choice_type == "Unassigned":
-                type = random.choice(types)        
-                full_question = question.replace("''", type)
-                print(full_question)
-                     
-        elif question_type == "ears": 
-            if user_choice_type == "Unassigned": 
-                print(question)
-                     
-        elif question_type == "legs": 
-            if user_choice_type == "Unassigned":             
-                print(question)
+            if question_type == "main_color":
+                list_of_values = self.colors 
+                main_color = random.choice(list_of_values)
+                full_question = question.replace("''", main_color)
+                value = main_color
                 
-        elif question_type == "horns": 
-            if user_choice_type == "Unassigned": 
-                print(question)
+            elif question_type == "habitat":
+                list_of_values = self.habitats
+                habitat = random.choice(list_of_values)
+                full_question = question.replace("''", habitat)
+                value = habitat
+
+            elif question_type == "shape":
+                list_of_values = self.shapes
+                shape = random.choice(list_of_values)
+                full_question = question.replace("''", shape)
+                value = shape
+
+            elif question_type == "type": 
+                list_of_values = self.types
+                poke_type = random.choice(list_of_values)        
+                full_question = question.replace("''", poke_type)
+                value = poke_type
             
-        elif question_type == "tail": 
-            if user_choice_type == "Unassigned":        
-                print(question)
-        
-       
+            else: 
+                full_question = question
+                # the boolean fields don't have lists
+                value = None
+                list_of_values = None
+
+            question = [question_type, full_question, value, list_of_values]
+
+            return question
+ 
+    def get_response(self):
+
+        responses = [
+                    "Hmm..let me think on that", 
+                    "Ah-ha, we are getting somewhere", 
+                    "I think I'm getting closer to the answer!", 
+                    "Oooh, we are narrowing it down...",
+                    "Getting there!",
+                    "Just a couple more questions"
+                    ]
+                    
+        response = random.choice(responses) 
+
+        return response       
+
+    def handle(self, *args, **kwargs):
+                   
+        ##### for test purposes
+        player_pokemon_choice = "pikachu"
+        ai_pokemon_guess = "voltorb"
+        #####
+                            
+        win = False
+        while win == False:       
+
+            # pick a question
+            question = self.get_question()  
+            if question:        
+                question_type = question[0]
+                full_question = question[1]
+                value = question[2]
+                list_of_values = question[3]
+
+                print(full_question)
+                answer = input("y / n / unsure\n")
+
+                if answer == "y":
+                    try:
+                        #print(self.get_response())
+                        if list_of_values is not None:
+                            # change player choice value
+                            self.player_choice[question_type] = value
+                            self.remove_question(question_type)
+                        else: 
+                            # for the boolean questions, make True
+                            self.player_choice[question_type] = True
+                            self.remove_question(question_type)
+                            self.narrow_down(question_type)
+                    except Exception as e:
+                        print(e)
+
+                elif answer == "n":       
+                    print(self.get_response())      
+                    try:
+                        if list_of_values is not None:
+                            list_of_values.remove(value) 
+                            list_items_left = len(list_of_values)
+                            if list_items_left <= 0: 
+                                print(f"Well we are going to have to start again, as I've run out of ideas...")
+                                break
+
+                        else:
+                            self.player_choice[question_type] = True
+                            self.remove_question(question_type)
+
+                    except Exception as e:
+                        print(e)
+
+                elif answer == "unsure":  
+                    print("I need to find out more...")  
+                    # carry on asking, do nothing      
+                    pass
+
+                else: 
+                    print("Not what I asked for...let's try again...")
+
+                ########################
+                # filter the list of pokemon here
+                # 
+            else: 
+                print("no quetsions left, we will have to start ovur")
+                break
         else: 
             print(f"Is this your chosen Pokemon? >>> {ai_pokemon_guess}")
-            answer = input("Enter yes or no: ")
+            answer = input("y / n")
             
-            if answer == "yes": 
+            if answer == "y": 
                 print("Good choice! That was a tough one!")
                 win = True           
             
-            elif answer == "no": 
+            elif answer == "n": 
                 print("I'll have to try again")
-             
+  
 
-           
-        # filter queries based on user_choice values
-            
