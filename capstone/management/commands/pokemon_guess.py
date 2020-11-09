@@ -7,13 +7,13 @@ import random
 
 
 ##  make the narrow_down function work.... 
-
+## sea + waters-edge.. combine these
 
 
 class Command(BaseCommand):
     help = "Pokemon practice"
 
-    # evolves from is not boolean but we want true or false value, if none = false
+    
 
     colors = [
             "black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"
