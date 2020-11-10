@@ -13,8 +13,6 @@ import random
 class Command(BaseCommand):
     help = "Pokemon practice"
 
-    
-
     colors = [
             "black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"
             ] 
@@ -32,59 +30,172 @@ class Command(BaseCommand):
             ]
 
     remaining_questions = [
-                        "shape", "color", "habitat", "evolves", "type", "ears", "legs", "horns", "tail", "fins", "wings", "beak"
+                        "shape", "main_color", "habitat", "evolves", "type", "ears", "legs", "horns", "tail", "fins", "wings", "beak"
                         ]  
      
     # set all user choice values as default None
     player_choice = {
-            "name":None,
             "shape":None,
             "main_color":None,
             "habitat":None,
-            "evolves":None,
-            "type":None,
+            "main_type":None,
+            "has_evolved":None,
             "ears":None,
-            "legs":None,
+            "more_than_two_legs":None,
             "horns":None,
             "tail":None,
             "fins":None,
             "wings":None,
             "beak":None
             }
-            
-    # start off with all pokemon as a possibility
-    pokemon_possibilities = []
-    all_pokemon = Pokemon.objects.all()
     
-    for each_pokemon in all_pokemon:  
-        id_no = each_pokemon.pokemon_id
-        pokemon_possibilities.append(id_no)          
-         
-    def narrow_down(self, question_type):       
-        pokemon_possibilities = self.pokemon_possibilities
+    all_pokemon = Pokemon.objects.all()
+                    
+    def narrow_down(self):       
+        # un"self" a bunch of stuff..
         all_pokemon = self.all_pokemon
-        player_choice = self.player_choice        
-        values = player_choice.values()
-        print("narrowing down")
-              
-        for choice in values:  
-            print(choice)
-            # for those in player choice with given values, eg "habitat"
-            if choice is not None:                              
-                # loop through each pokemon
-                for pokemon in all_pokemon:
-                    print(pokemon)
-                    attribute = f"{str(pokemon)}.{question_type}"
-                    ########## somehow get "main color" as a variable- value
-                    if pokemon.attribute!= choice:
-                        pokemon_possibilities.remove(pokemon.pokemon_id)
-                    else: 
-                        print(f"pokemon {pokemon.pokemon_id} is a possibility")
+        player_choice = self.player_choice           
+    
+        # add each id
+        output_pokemon = {}
+        for pokemon in all_pokemon:
+            output_pokemon[pokemon.id] = pokemon
+        
+        for pokemon in all_pokemon:            
+            # shape         
+            try:
+                if player_choice['shape'] and (str(player_choice['shape']).lower() != str(pokemon.shape).lower()):
+                    #print(f"[INFO] ({pokemon.shape}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)
+            
+            # main color
+            try:
+                if player_choice['main_color'] and (str(player_choice['main_color']).lower() != str(pokemon.main_color).lower()):
+                    #print(f"[INFO] ({pokemon.main_color}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)
+            
+            # habitat    
+            try:
+                if player_choice['habitat'] and (str(player_choice['habitat']).lower() != str(pokemon.habitat).lower()):
+                    #print(f"[INFO] ({pokemon.habitat}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass                                       
+            except Exception as e:
+                print(e)   
+                          
+            # type
+            try:
+                if player_choice['main_type'] and (str(player_choice['main_type']).lower() != str(pokemon.main_type).lower()):
+                    #print(f"[INFO] ({pokemon.main_type}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]               
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)
 
-                    return pokemon_possibilities
+            # evolves i.e has this pokemon evolved from something else, like you know - as basic pokemon?
+            try:
+                # if there is a choice at all
+                if player_choice['has_evolved'] is not None:
+                    #if the choice is false
+                    if player_choice['has_evolved'] != True:
+                        #print(f"[Warning] {pokemon.evolves_from} evolves into {pokemon.name}")
+                        if str(pokemon.evolves_from) != "None":
+                            #print(output_pokemon[pokemon.id])
+                            del output_pokemon[pokemon.id]                
+                    # if the choice is true
+                    else:
+                        #print(f"[INFO] {pokemon.evolves_from}/{pokemon.name}")
+                        if str(pokemon.evolves_from) == "None":
+                            del output_pokemon[pokemon.id]
+                else:
+                    pass
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)
 
+            # ears
+            try:
+                if player_choice['ears'] and (str(player_choice['ears']).lower() != str(pokemon.ears).lower()):
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)
+   
+            # two legs
+            try:
+                if player_choice['more_than_two_legs'] and (str(player_choice['more_than_two_legs']).lower() != str(pokemon.more_than_two_legs).lower()):
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)                        
+               
+            # horns
+            try:
+                if player_choice['horns'] and (str(player_choice['horns']).lower() != str(pokemon.horns).lower()):
+                    #print(f"[INFO] ({pokemon.horns}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)               
+               
+            # tail 
+            try:
+                if player_choice['tail'] and (str(player_choice['tail']).lower() != str(pokemon.tail).lower()):
+                    #print(f"[INFO] ({pokemon.tail}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e) 
+               
+            # fins 
+            try:
+                if player_choice['fins'] and (str(player_choice['fins']).lower() != str(pokemon.fins).lower()):
+                    #print(f"[INFO] ({pokemon.fins}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)
+            
+            # wings
+            try:
+                if player_choice['wings'] and (str(player_choice['wings']).lower() != str(pokemon.wings).lower()):
+                    #print(f"[INFO] ({pokemon.wings}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e) 
+           
+            # beak
+            try:
+                if player_choice['beak'] and (str(player_choice['beak']).lower() != str(pokemon.beak).lower()):
+                    #print(f"[INFO] ({pokemon.wings}) - {pokemon.name}")
+                    del output_pokemon[pokemon.id]
+            except KeyError:
+                pass
+            except Exception as e:
+                print(e)   
 
-
+        print("-" * 15)        
+        for pokemon in output_pokemon:             
+            print(f"{output_pokemon[pokemon].id} - {output_pokemon[pokemon].name}")
+        return output_pokemon
 
     def remove_question(self, question_type):
         self.remaining_questions.remove(question_type)
@@ -140,6 +251,7 @@ class Command(BaseCommand):
                 value = poke_type
             
             else: 
+            
                 full_question = question
                 # the boolean fields don't have lists
                 value = None
@@ -150,7 +262,7 @@ class Command(BaseCommand):
             return question
  
     def get_response(self):
-
+        
         responses = [
                     "Hmm..let me think on that", 
                     "Ah-ha, we are getting somewhere", 
@@ -158,11 +270,13 @@ class Command(BaseCommand):
                     "Oooh, we are narrowing it down...",
                     "Getting there!",
                     "Just a couple more questions"
-                    ]
-                    
+                    ]                    
         response = random.choice(responses) 
-
         return response       
+
+
+
+
 
     def handle(self, *args, **kwargs):
                    
@@ -184,6 +298,7 @@ class Command(BaseCommand):
 
                 print(full_question)
                 answer = input("y / n / unsure\n")
+                output_pokemon = self.narrow_down()
 
                 if answer == "y":
                     try:
@@ -196,7 +311,6 @@ class Command(BaseCommand):
                             # for the boolean questions, make True
                             self.player_choice[question_type] = True
                             self.remove_question(question_type)
-                            self.narrow_down(question_type)
                     except Exception as e:
                         print(e)
 
@@ -209,11 +323,9 @@ class Command(BaseCommand):
                             if list_items_left <= 0: 
                                 print(f"Well we are going to have to start again, as I've run out of ideas...")
                                 break
-
                         else:
                             self.player_choice[question_type] = True
                             self.remove_question(question_type)
-
                     except Exception as e:
                         print(e)
 
