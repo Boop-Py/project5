@@ -6,7 +6,7 @@
         Search
     </h2>
     <section>
-        <form class="ui form" action={% url 'search' %} method="post">
+        <form class="form" action={% url 'search' %} method="post">
             {% csrf_token %}
             <input class="nes-textarea" name="search_input" type="text" align="center" placeholder="All or part of a Pokemon name.. eg 'pika'"></input>
             <button class="nes-btn is-success" type="submit" align="center">Search a Pokemon!</button>    
@@ -16,24 +16,23 @@
         Random Pokemon!
     </a> 
 </div> 
-<div class="nes-container is-dark is-rounded">
-    <div class="nes-container is-dark is-centered">
-        <h2 class="nes-btn is-dark">
+<div class="nes-container is-rounded">
+    <div class="nes-container is-centered">
+        <h2>
             Browse!  
-        </h2>
-        
+        </h2>      
     </div>    
     <div class="lists">
         <ul class="nes-list is-disc">
         {% for each in pokemon_list %}
-        <li>
-            <a class="nes-badge" href="{% url 'pokemon' each.pokemon_id %}">  
-                <span class="is-primary">{{ each.name }}</span>                
-            </a>
-        </li>
+            <li>
+                <a class="nes-badge" href="{% url 'pokemon' each.pokemon_id %}">  
+                    <span class="is-primary">{{ each.name }}</span>                
+                </a>
+            </li>
         {% endfor %}
         </ul>
     </div>
 </div>
-</div>
+
 {% endblock %}

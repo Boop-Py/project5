@@ -1,8 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.forms.models import model_to_dict
 from django.shortcuts import render
+from .models import Pokemon
 import requests
 import random
-from .models import Pokemon
+import json
 import re
 
 
@@ -12,6 +14,42 @@ import re
 # fix the weird descriptions
 # input tails, legs, horns, tail
 
+all_pokemon = Pokemon.objects.all()
+
+colors = [
+        "black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"
+        ] 
+
+habitats = [
+            "cave", "forest", "grassland", "mountain", "rare", "rough-terrain", "water", "urban"
+            ] 
+
+shapes = [
+        "ball", "squiggle", "fish", "arms", "blob", "upright", "legs", "quadruped", "wings",  "tentacles", "heads", "humanoid", "bug-wings", "armor"
+        ]
+
+types = [
+        "normal", "flying", "ground", "bug", "steel", "water", "ice", "dark", "fighting", "poison", "rock", "ghost", "fire", "grass", "psychic", "dragon", "fairy"
+        ]
+
+remaining_questions = [
+                    "shape", "main_color", "habitat", "has_evolved", "main_type", "ears", "more_than_two_legs", "horns", "tail", "fins", "wings", "beak"
+                    ]
+
+player_choice = {
+        "shape":None,
+        "main_color":None,
+        "habitat":None,
+        "main_type":None,
+        "has_evolved":None,
+        "ears":None,
+        "more_than_two_legs":None,
+        "horns":None,
+        "tail":None,
+        "fins":None,
+        "wings":None,
+        "beak":None
+        }
 
 def index(request):  
     pokemon_list = Pokemon.objects.all()
@@ -19,13 +57,10 @@ def index(request):
         "pokemon_list": pokemon_list
     })
 
-def who_is_that_pokemon(request):  
-    return render(request, "capstone/who.html")    
-        
 def search(request): 
     if request.method == "POST": 
         # all pokemon
-        pokemon_list = Pokemon.objects.all()
+        pokemon_list = all_pokemon
         # get value from form   
         raw_pokemon_input = request.POST["search_input"]    
         print(raw_pokemon_input)
@@ -74,4 +109,15 @@ def randomise(request):
 
 def todolist(request):
     return render(request, "capstone/todolist.html")
+     
+def battle(request):           
+    return render(request, "capstone/battle.html")
 
+def ai_pokemon_choice(request):
+    random_number = random.randint(1,152)
+    print(random_number)
+    ai_choice = Pokemon.objects.filter(
+                id=random_number
+                )
+    print(ai_choice)
+    return JsonResponse({"computerSelection": ai_choice})

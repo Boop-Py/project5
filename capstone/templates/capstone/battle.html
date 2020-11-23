@@ -1,0 +1,108 @@
+{% extends "capstone/layout.html" %}
+{% load static %}
+{% block body %}
+<body>
+    <h1>Pokemon Battle</h1>
+    <p><i class="nes-ash"></i>Select a Pokemon and see if you can beat Ash!</p>
+     
+    <p>Remember, types are important!</p>
+
+    <div class='score'>
+
+    </div>
+    <div class='message'>
+
+    </div>
+
+    <button class="nes-btn is-error" type='button'>Charmander</button><i class="nes-charmander"></i>
+    <button class="nes-btn is-primary" type='button'>Squirtle</button><i class="nes-squirtle"></i>
+    <button class="nes-btn is-success" type='button'>Bulbasaur</button><i class="nes-bulbasaur"></i>
+    
+    <script>
+        const message = document.querySelector('.message');
+        const score = document.querySelector('.score');
+        const buttons = document.querySelectorAll('button');
+        const winnerScores = [0,0];
+        
+        //add event listeners to buttons
+        for ( let i = 0 ; i < buttons.length ; i++){
+            buttons[i].addEventListener('click', playGame);
+        }
+
+        function playGame(e){
+            //setup player's selection
+            let playerSelection = e.target.innerText;
+            //setup a random number to select for computer
+            //selects a number between 0 and 1 (1 not-inclusive)
+            let computerSelection = Math.random();
+
+            //if computerSelection is less than .34, computer selects Rock
+            if (computerSelection < .34){
+                computerSelection = 'Charmander';
+            } else if (computerSelection <= .67){
+                computerSelection = 'Squirtle';
+            } else {
+                computerSelection = 'Bulbasaur';
+            }
+            
+            //setup a function to compare winners and return result
+            let result = checkWinner(playerSelection, computerSelection);
+
+            //output scores to the DOM
+            if (result === 'Player'){
+                result += ' wins!';
+                //update score
+                winnerScores[0]++;
+            }
+
+            if (result === 'Ash'){
+                result += ' wins!';
+                winnerScores[1]++;
+            }
+
+            if (result === 'Draw'){
+                result += '. It\'s a tie!'
+            }
+
+            //output score into Score DIV
+            score.innerHTML = 'Player: [ ' + winnerScores[0]+ ' ] Ash: [ ' + winnerScores[1] + ' ]';
+
+            //output player and computer's selections
+            messenger('Player chooses <strong>' + playerSelection + '</strong> ... Ash chooses <strong>' + computerSelection + '</strong><br>' + result);
+        }
+
+        function messenger(selectionMessage){
+            message.innerHTML = selectionMessage;
+        }
+
+        function checkWinner(player, computer){
+            if (player === computer){
+                return 'Draw';
+            }
+
+            if (player === 'Charmander'){
+                if(computer === 'Squirtle'){
+                    return 'Ash';
+                } else {
+                    return 'Player';
+                }
+            }
+
+            if (player === 'Squirtle'){
+                if (computer === 'Bulbasaur'){
+                    return 'Ash';
+                } else {
+                    return 'Player';
+                }
+            }
+
+            if (player === 'Bulbasaur'){
+                if (computer === 'Charmander'){
+                    return 'Ash';
+                } else {
+                    return 'Player';
+                }
+            }
+        }
+    </script>
+{% endblock %}

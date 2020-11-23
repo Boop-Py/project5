@@ -190,8 +190,8 @@ class Command(BaseCommand):
             # ears
             try:
                 if player_choice['ears'] and (str(player_choice['ears']).lower() != str(pokemon.ears).lower()):
-                    print(str(player_choice['ears']).lower())
-                    print(str(pokemon.ears).lower())
+                    #print(str(player_choice['ears']).lower())
+                    #print(str(pokemon.ears).lower())
                     del output_pokemon[pokemon.id]
             except KeyError:
                 pass
@@ -261,7 +261,7 @@ class Command(BaseCommand):
             except Exception as e:
                 print(e)
                 
-        print(f"{len(output_pokemon)} in this list")        
+        #print(f"{len(output_pokemon)} in this list")        
         if len(output_pokemon) == 1: 
             print("is this your pokemon?")
         #print(len(output_pokemon))

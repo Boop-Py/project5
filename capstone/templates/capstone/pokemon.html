@@ -3,43 +3,34 @@
 {% block body %}
 <div class="nes-container with-title is-centered">
     <p class="title">
-        {{ pokemon_info.name }}
+        <span class="is-warning">Number {{ pokemon_info.pokemon_id }}</span>        
     </p>
-    
     <p class="nes-badge">
-        <span class="is-warning">Number {{ pokemon_info.pokemon_id }}</span>
-    </p>
-    
+        <span class="is-warning">{{ pokemon_info.name }}</span>
+    </p> 
     <div class="nes-table-responsive">
         <table class="nes-table is-bordered is-centered">
             <thead>
                 <tr>
-                    <th>Table.is-bordered</th>
-                    <th>Table.is-centered</th>
-                    <th>Table.is-centered</th>
-                    <th>Table.is-centered</th>
+                    <th>Description:</th>
+                    <th>Evolves from:</th>
+                    <th>Evolves to:</th>
+                    <th>Type:</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>{{ pokemon_info.description }}</td>
-                    <td>{{ pokemon_info.main_type }} type</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ pokemon_info.evolves_from }}</td>
+                    <td>-</td>
+                    <td>{{ pokemon_info.main_type }}</td>
                 </tr>
                 <tr>
-                    <td>Evolves from {{ pokemon_info.evolves_from }}</td>
-                    <td>Evolves to </td>
-                    <td></td>
-                    <td></td>
+                    <td>Normal Sprite: <img src="{{ pokemon_info.img }}"/></td>
+                    <td>Shiny Sprite: <img src="{{ pokemon_info.shiny_img }}"/></td>
                 </tr>
             </tbody>
         </table>
-    </div>
-
-      
-    
-    
-    
+    </div> 
 </div>
 {% endblock %}
