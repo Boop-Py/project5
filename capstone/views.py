@@ -10,46 +10,18 @@ import re
 
 ## TODO
 # https://nostalgic-css.github.io/NES.css/#
-# make pokemon game
-# fix the weird descriptions
-# input tails, legs, horns, tail
+# make another pokemon game
+# make pretty
+# mobile responsive
+# write a README - paragraphs on complexity
+# requirements.txt file 
 
-all_pokemon = Pokemon.objects.all()
 
-colors = [
-        "black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"
-        ] 
+# stickman https://www.w3schools.com/html/html5_canvas.asp
+# variable values + cat + hints
 
-habitats = [
-            "cave", "forest", "grassland", "mountain", "rare", "rough-terrain", "water", "urban"
-            ] 
 
-shapes = [
-        "ball", "squiggle", "fish", "arms", "blob", "upright", "legs", "quadruped", "wings",  "tentacles", "heads", "humanoid", "bug-wings", "armor"
-        ]
 
-types = [
-        "normal", "flying", "ground", "bug", "steel", "water", "ice", "dark", "fighting", "poison", "rock", "ghost", "fire", "grass", "psychic", "dragon", "fairy"
-        ]
-
-remaining_questions = [
-                    "shape", "main_color", "habitat", "has_evolved", "main_type", "ears", "more_than_two_legs", "horns", "tail", "fins", "wings", "beak"
-                    ]
-
-player_choice = {
-        "shape":None,
-        "main_color":None,
-        "habitat":None,
-        "main_type":None,
-        "has_evolved":None,
-        "ears":None,
-        "more_than_two_legs":None,
-        "horns":None,
-        "tail":None,
-        "fins":None,
-        "wings":None,
-        "beak":None
-        }
 
 def index(request):  
     pokemon_list = Pokemon.objects.all()
@@ -121,3 +93,8 @@ def ai_pokemon_choice(request):
                 )
     print(ai_choice)
     return JsonResponse({"computerSelection": ai_choice})
+
+
+def guessing_game(request):  
+    pokemon_list = Pokemon.objects.all()
+    return render(request, "capstone/guessing_game.html")    

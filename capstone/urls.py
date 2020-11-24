@@ -8,5 +8,6 @@ urlpatterns = [
     path("search", views.search, name="search"),
     path("pokemon/<str:pokemon_id>", views.pokemon, name="pokemon"),
     path("randomise", views.randomise, name="randomise"), 
+    path("guessing-game", views.guessing_game, name="guessing_game"),
     path("battle", views.battle, name="battle")     
 ]
