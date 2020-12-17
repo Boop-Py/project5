@@ -13,17 +13,21 @@
     <!-- core style only -->
     <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
     <link href="{% static 'capstone/styles.css' %}" rel="stylesheet">
-    <script type="text/javascript" src="capstone/script.js"></script>
+    <script src="{% static 'capstone/script.js' %}"></script>
 
 {% block head %}
 {% endblock %}
 </head>
 <body>
+<div class="container">
+    <a class="nes-btn" href="{% url 'index' %}">Homepage</a>
+    <a class="nes-btn is-primary" href="{% url 'pokedex' %}">Pokedex!</a>
+    <a class="nes-btn is-primary" href="{% url 'battle' %}">Battle!</a>
+    <a class="nes-btn is-primary" href="{% url 'guessing_game' %}">Guessing Game!</a>
+    <a class="nes-btn is-primary" href="{% url 'snake' %}">Ekans!</a>
 
-<a class="nes-btn" href="{% url 'index' %}">Homepage</a>
-<a class="nes-btn is-primary" href="{% url 'battle' %}">Battle!</a>
-<a class="nes-btn is-primary" href="{% url 'guessing_game' %}">Guessing Game!</a>
-{% block body %}
-{% endblock %}
+    {% block body %}
+    {% endblock %}
+</div>
 </body>
 </html>

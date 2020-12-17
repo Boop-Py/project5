@@ -1,36 +1,73 @@
 {% extends "capstone/layout.html" %}
 {% load static %}
 {% block body %}
-<div class="nes-container with-title is-centered">
+<div class="nes-container with-title is-centered my-4">
     <p class="title">
         <span class="is-warning">Number {{ pokemon_info.pokemon_id }}</span>        
     </p>
-    <p class="nes-badge">
+    <p class="nes-badge my-4 text-centered">
         <span class="is-warning">{{ pokemon_info.name }}</span>
     </p> 
-    <div class="nes-table-responsive">
-        <table class="nes-table is-bordered is-centered">
-            <thead>
-                <tr>
-                    <th>Description:</th>
-                    <th>Evolves from:</th>
-                    <th>Evolves to:</th>
-                    <th>Type:</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ pokemon_info.description }}</td>
-                    <td>{{ pokemon_info.evolves_from }}</td>
-                    <td>-</td>
-                    <td>{{ pokemon_info.main_type }}</td>
-                </tr>
-                <tr>
-                    <td>Normal Sprite: <img src="{{ pokemon_info.img }}"/></td>
-                    <td>Shiny Sprite: <img src="{{ pokemon_info.shiny_img }}"/></td>
-                </tr>
-            </tbody>
-        </table>
-    </div> 
+    <div class="row my-4">    
+        <div class="col-6">
+            <div class="nes-container with-title">
+                <p class="title">
+                    <span>Description</span>        
+                </p>
+            {{ pokemon_info.description }}
+            </div>
+        </div>            
+        <div class="col">
+            <div class="nes-container with-title">
+                <p class="title">
+                    <span>Default</span>        
+                </p>
+                <img src="{{ pokemon_info.img }}"/>
+            </div>
+        </div>             
+        <div class="col">
+            <div class="nes-container with-title">
+                <p class="title">
+                    <span>Shiny</span>        
+                </p>
+                <img src="{{ pokemon_info.shiny_img }}"/>        
+   
+            </div>
+        </div> 
+    </div>
+    <div class="row my-4">
+        <div class="col">
+            <div class="nes-container with-title">
+                <p class="title">
+                    <span>Main Type</span>        
+                </p>
+                <p>
+                    {{ pokemon_info.main_type }}
+                <p>     
+            </div>
+        </div> 
+        <div class="col">
+            <div class="nes-container with-title">
+                <p class="title">
+                    <span>Secondary Type</span>        
+                </p>
+                <p>
+                    {{ pokemon_info.secondary_type}}
+                <p>     
+            </div>
+        </div> 
+    </div>
+    <div class="row my-4">
+        <div class="col">
+            <div class="nes-container with-title">
+                <p class="title">
+                    <span>Evolves From</span>        
+                </p>
+                <p>
+                    {{ pokemon_info.evolves_from }}
+                <p>     
+            </div>
+        </div> 
+    </div>                    
 </div>
 {% endblock %}

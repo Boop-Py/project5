@@ -2,20 +2,18 @@
 {% load static %}
 {% block body %}
 
-<div class="nes-container my-4">
+<div class="nes-container">
     <h1>Guess!</h1>
     <p>Use the alphabet below to guess the word.</p>
-    <div class="row">
-        <div id="buttons"></div> 
-    </div> 
-    <div class="row">
-        <div id="hold"></div>
-    </div>
-    <div class="row">
+    <div>
+        <div id="buttons"></div>  
         <p id="livesLeft"></p> 
-    </div>  
-    <div class="nes-container">
-        <button class="nes-btn" id="reset">Play again</button>
+        <div class="nes-container">
+        <div id="hold"></div>
+        </div>        
+        <div class="nes-container">
+            <button class="nes-btn" id="reset">Play again</button>
+        </div>
     </div>
 </div>
 
@@ -56,19 +54,17 @@ var buttons = function () {
 result = function () {
     wordHolder = document.getElementById('hold');
     correct = document.createElement('ul');
-    console.log(word);
-    console.log("next to 3");
+
     for (var i = 0; i < word.length; i++) {
         correct.setAttribute('id', 'my-word');
         guess = document.createElement('li');
-        guess.setAttribute('class', 'guess');
         
         // dashes for each letter
-        if (word[i] === "-") {
-            guess.innerHTML = "-";
+        if (word[i] === "*") {
+            guess.innerHTML = "*";
             space = 1;
         } else {
-            guess.innerHTML = "_";
+            guess.innerHTML = "*";
         }
 
     guesses.push(guess);
@@ -114,36 +110,47 @@ check = function () {
 
 // Play
 play = function () {
-;
+    categories = [
+        ["pikachu"]
+    ];
 
-
+    chosenCategory = categories[Math.floor(Math.random() * categories.length)];
+    console.log(chosenCategory);
     // choose word here
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
         //document.getElementById("demo").innerHTML = this.responseText;
             var chosenWord = JSON.parse(this.responseText);
-            word = chosenWord 
-
-            buttons();
-
-            guesses = [ ];
-            lives = 10;
-            counter = 0;
-            space = 0;
-            result();
-            comments();
-
-
+            console.log(chosenWord);
+            console.log(chosenWord.length);
         }
+    
+    word = chosenWord  
+    //console.log(word);
     };
   
     xhttp.open("GET", "api/random-pokemon", true);
     xhttp.send(); 
-    console.log(word);
+    //console.log(word);
+
+
+    word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+    //console.log(word);
+
+
+    buttons();
+
+    guesses = [ ];
+    lives = 10;
+    counter = 0;
+    space = 0;
+    result();
+    comments();
 }
 
 play();
+
 
  // Reset
 document.getElementById('reset').onclick = function() {

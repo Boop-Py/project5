@@ -1,23 +1,38 @@
 {% extends "capstone/layout.html" %}
 {% load static %}
 {% block body %}
-<body>
-    <h1>Pokemon Battle</h1>
-    <p><i class="nes-ash"></i>Select a Pokemon and see if you can beat Ash!</p>
-     
-    <p>Remember, types are important!</p>
 
-    <div class='score'>
-
+    <div class="nes-container my-4">
+        <h1 class="text-center">Pokemon Battle</h1>
+        <div class="text-center my-6">
+            <p><i class="nes-ash"></i>Select a Pokemon and see if you can beat Ash!</p>           
+            <p>Remember, types are important!</p>
+        </div>
+        <div class="container my-6">
+            <div class='score'>
+            </div>
+        
+            <div class='message'>
+            </div>
+        </div>
+        <div class="container m-6">
+            <div class="row">
+                <div class="col">                  
+                    <i class="nes-charmander"></i>
+                    <button class="nes-btn is-error m-4" type='button'>Charmander</button>
+                </div>
+                <div class="col">
+                    <i class="nes-squirtle"></i>
+                    <button class="nes-btn is-primary m-4" type='button'>Squirtle</button>
+                </div>
+                <div class="col">
+                    <i class="nes-bulbasaur"></i>    
+                    <button class="nes-btn is-success m-4" type='button'>Bulbasaur</button>
+                </div>
+            </div>                              
+        </div>     
     </div>
-    <div class='message'>
 
-    </div>
-
-    <button class="nes-btn is-error" type='button'>Charmander</button><i class="nes-charmander"></i>
-    <button class="nes-btn is-primary" type='button'>Squirtle</button><i class="nes-squirtle"></i>
-    <button class="nes-btn is-success" type='button'>Bulbasaur</button><i class="nes-bulbasaur"></i>
-    
     <script>
         const message = document.querySelector('.message');
         const score = document.querySelector('.score');

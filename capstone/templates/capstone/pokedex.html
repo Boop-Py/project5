@@ -1,0 +1,42 @@
+{% extends "capstone/layout.html" %}
+{% load static %}
+{% block body %}
+<div class="nes-container is-centered is-rounded my-4">
+    <h2 class="ui center aligned header">
+        Search
+    </h2>
+    <section>
+        <form class="form" action={% url 'search' %} method="post">
+            {% csrf_token %}
+            <input class="nes-textarea" name="search_input" type="text" align="center" placeholder="All or part of a Pokemon name.. eg 'pika'"></input>
+            <button class="nes-btn is-success mt-4" type="submit" align="center">Search a Pokemon!</button>    
+        </form>
+    </section>
+    <a class="nes-btn is-primary mt-4" href="{% url 'randomise' %}">
+        Random Pokemon!
+    </a> 
+</div> 
+
+<div class="nes-container is-rounded my-4">
+    <div class="nes-container is-centered">
+        <h2>
+            Browse!  
+        </h2>      
+    </div>  
+    <div class="row">      
+        {% for each in pokemon_list %}
+        <div class="col-sm pt-4">
+            <div class="card">
+                <img src="{{ each.img }}" class="card-img-top">
+                <div class="card-body">
+                    <a class="stretched-link" href="{% url 'pokemon' each.pokemon_id %}">  
+                        <span class="is-primary">{{ each.name }}</span>                
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}       
+    </div>
+</div>
+
+{% endblock %}

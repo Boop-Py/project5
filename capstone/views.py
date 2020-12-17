@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
 from django.forms.models import model_to_dict
 from django.shortcuts import render
 from .models import Pokemon
@@ -10,29 +10,32 @@ import re
 
 ## TODO
 # https://nostalgic-css.github.io/NES.css/#
-# make another pokemon game
 # make pretty
 # mobile responsive
 # write a README - paragraphs on complexity
 # requirements.txt file 
-
+# fix the search
 
 # stickman https://www.w3schools.com/html/html5_canvas.asp
-# variable values + cat + hints
+
 
 
 
 
 def index(request):  
+    return render(request, "capstone/index.html")
+
+def pokedex(request):  
     pokemon_list = Pokemon.objects.all()
-    return render(request, "capstone/index.html", {
+    return render(request, "capstone/pokedex.html", {
         "pokemon_list": pokemon_list
     })
+
 
 def search(request): 
     if request.method == "POST": 
         # all pokemon
-        pokemon_list = all_pokemon
+        pokemon_list = Pokemon.objects.all()
         # get value from form   
         raw_pokemon_input = request.POST["search_input"]    
         print(raw_pokemon_input)
@@ -84,17 +87,26 @@ def todolist(request):
      
 def battle(request):           
     return render(request, "capstone/battle.html")
+    
+def snake(request):           
+    return render(request, "capstone/snek.html")    
 
 def ai_pokemon_choice(request):
     random_number = random.randint(1,152)
-    print(random_number)
+    #print(random_number)
     ai_choice = Pokemon.objects.filter(
                 id=random_number
                 )
-    print(ai_choice)
-    return JsonResponse({"computerSelection": ai_choice})
+    ai_choice_name = ai_choice[0].name
+    #print(len(ai_choice_name))
+    #output = ai_choice.values()[0]
+    #print(output)   
+    return JsonResponse(ai_choice_name, safe=False)
 
 
 def guessing_game(request):  
-    pokemon_list = Pokemon.objects.all()
-    return render(request, "capstone/guessing_game.html")    
+    return render(request, "capstone/guessing_game.html")  
+
+
+def test(request):           
+    return render(request, "capstone/test.html")     
